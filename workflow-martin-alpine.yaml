@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: worklow-martin-alpine
+  namespace: ci-cd
+spec:
+  entrypoint: main
+  volumes:
+    - name: dockerfiles
+      emptyDir: {}
+  templates:
+#     - name: main
+#       steps:
+#         - - name: build
+#             template: build
+#           - name: publish
+#             template: publish
+#
+#       volumes:
+#         - name: kaniko-secret
+#           secret:
+#             secretName: kaniko-secret
+    - name: build
+      inputs:
+        parameters:
+          - name: version
+            default: latest
+      container:
+        image: gcr.io/kaniko-project/executor:v1.11.0
+        args:
+          - --destination=ghcr.io/martin-deploy/martin-alpine:{{inputs.parameters.version}}
+          # - --context=dir:///mnt/wf/volumes/dockerfiles
+          # - --context=git://https://github.com/martin-deploy/dockerfiles.git#refs/heads/master
+          - --dockerfile=Dockerfile.martin-alpine
+          # - --git                                       Branch to clone if build context is a git repository (default branch=,single-branch=false,recurse-submodules=false)
+          # - --build-arg multi-arg type                  This flag allows you to pass in ARG values at build time. Set it repeatedly for multiple values.
+          # - --label multi-arg type                      Set metadata for an image. Set it repeatedly for multiple labels.
+          # - --single-snapshot                           Take a single snapshot at the end of the build.
+          # - --insecure                                  Push to insecure registry using plain HTTP
+          # - --insecure-registry multi-arg type          Insecure registry using plain HTTP to push and pull. Set it repeatedly for multiple registries.
+          # - --skip-tls-verify                           Push to insecure registry ignoring TLS verify
+          # - --skip-tls-verify-registry multi-arg type   Insecure registry ignoring TLS verify to push and pull. Set it repeatedly for multiple registries.
+        volumeMounts:
+          - mountPath: /mnt/wf/volumes/dockerfiles
+            name: dockerfiles
+
