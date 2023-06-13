@@ -14,7 +14,7 @@ spec:
       volumes:
         - name: kaniko-config
           secret:
-            secretName: martin-workflows-auth
+            secretName: martin-auth-ghcr
       container:
         image: gcr.io/kaniko-project/executor:v1.11.0
         args:
@@ -27,4 +27,4 @@ spec:
         volumeMounts:
           - mountPath: /kaniko/.docker/config.json
             name: kaniko-config
-            subPath: kaniko-config-ghcr
+            subPath: .dockerconfigjson
