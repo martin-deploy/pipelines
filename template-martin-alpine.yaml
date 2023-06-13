@@ -11,6 +11,10 @@ spec:
         parameters:
           - { name: branch,  default: master }
           - { name: version, default: latest }
+      volumes:
+        - name: kaniko-config
+          secret:
+            secretName: martin-workflows-auth
       container:
         image: gcr.io/kaniko-project/executor:v1.11.0
         args:
@@ -25,3 +29,7 @@ spec:
           # - --insecure-registry multi-arg type          Insecure registry using plain HTTP to push and pull. Set it repeatedly for multiple registries.
           # - --skip-tls-verify                           Push to insecure registry ignoring TLS verify
           # - --skip-tls-verify-registry multi-arg type   Insecure registry ignoring TLS verify to push and pull. Set it repeatedly for multiple registries.
+        volumeMounts:
+          - mountPath: /kaniko/.docker/config.json
+            name: kaniko-config
+            subPath: kaniko-config-ghcr
