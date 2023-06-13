@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: template-martin-alpine
+  name: template-martin-alpine-dotnet-sdk
   namespace: argo-workflows
 spec:
   templates:
@@ -18,9 +18,9 @@ spec:
       container:
         image: gcr.io/kaniko-project/executor:v1.11.0
         args:
-          - --destination=ghcr.io/martin-deploy/martin-alpine:{{inputs.parameters.version}}
+          - --destination=ghcr.io/martin-deploy/martin-alpine-dotnet-sdk:{{inputs.parameters.version}}
           - --context=git://github.com/martin-deploy/dockerfiles.git#refs/heads/{{inputs.parameters.branch}}
-          - --dockerfile=Dockerfile.martin-alpine
+          - --dockerfile=Dockerfile.martin-alpine-dotnet-sdk
           - --single-snapshot
           # - --build-arg key=value                  This flag allows you to pass in ARG values at build time. Set it repeatedly for multiple values.
           # - --label key=value                      Set metadata for an image.                                Set it repeatedly for multiple labels.
