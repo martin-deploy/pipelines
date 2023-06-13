@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: template-martin-alpine-templater
+  namespace: argo-workflows
+spec:
+  templates:
+    - name: build
+      inputs:
+        parameters:
+          - { name: branch,  default: master }
+          - { name: version, default: latest }
+      volumes:
+        - name: kaniko-config
+          secret:
+            secretName: martin-workflows-auth
+      container:
+        image: gcr.io/kaniko-project/executor:v1.11.0
+        args:
+          - --destination=ghcr.io/martin-deploy/martin-alpine-templater:{{inputs.parameters.version}}
+          - --context=git://github.com/martin-deploy/dockerfiles.git#refs/heads/{{inputs.parameters.branch}}
+          - --dockerfile=Dockerfile.martin-alpine-templater
+          - --single-snapshot
+          # - --build-arg key=value                  This flag allows you to pass in ARG values at build time. Set it repeatedly for multiple values.
+          # - --label key=value                      Set metadata for an image.                                Set it repeatedly for multiple labels.
+        volumeMounts:
+          - mountPath: /kaniko/.docker/config.json
+            name: kaniko-config
+            subPath: kaniko-config-ghcr
