@@ -15,7 +15,7 @@ spec:
         image: gcr.io/kaniko-project/executor:v1.11.0
         args:
           - --destination=ghcr.io/martin-deploy/martin-alpine:{{inputs.parameters.version}}
-          - --context=git://https://github.com/martin-deploy/dockerfiles.git#refs/heads/{{inputs.parameters.branch}}
+          - --context=git://github.com/martin-deploy/dockerfiles.git#refs/heads/{{inputs.parameters.branch}}
           # - --git branch={{inputs.parameters.branch}},single-branch=true,recurse-submodules=false
           - --dockerfile=Dockerfile.martin-alpine
           - --single-snapshot
