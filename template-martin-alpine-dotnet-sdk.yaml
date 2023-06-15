@@ -18,13 +18,13 @@ spec:
       container:
         image: gcr.io/kaniko-project/executor:v1.11.0
         args:
-          - --destination ghcr.io/martin-deploy/martin-alpine-dotnet-sdk:{{inputs.parameters.version}}
-          - --context git://github.com/martin-deploy/dockerfiles.git#refs/heads/{{inputs.parameters.branch}}
-          - --dockerfile Dockerfile.martin-alpine-dotnet-sdk
+          - --destination=ghcr.io/martin-deploy/martin-alpine-dotnet-sdk:{{inputs.parameters.version}}
+          - --context=git://github.com/martin-deploy/dockerfiles.git#refs/heads/{{inputs.parameters.branch}}
+          - --dockerfile=Dockerfile.martin-alpine-dotnet-sdk
           - --single-snapshot
           # - --build-arg key=value                  This flag allows you to pass in ARG values at build time. Set it repeatedly for multiple values.
-          - --label "org.opencontainers.image.source=https://github.com/martin-deploy/dockerfiles"
-          - --label "org.opencontainers.image.created={{workflow.creationTimestamp.RFC3339}}"
+          - --label="org.opencontainers.image.source=https://github.com/martin-deploy/dockerfiles"
+          - --label="org.opencontainers.image.created={{workflow.creationTimestamp.RFC3339}}"
         volumeMounts:
           - mountPath: /kaniko/.docker/config.json
             name: kaniko-config
