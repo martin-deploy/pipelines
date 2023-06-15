@@ -18,9 +18,9 @@ spec:
       container:
         image: gcr.io/kaniko-project/executor:v1.11.0
         args:
-          - --destination=ghcr.io/martin-deploy/martin-alpine-dotnet-runtime-web:{{inputs.parameters.version}}
-          - --context=git://github.com/martin-deploy/dockerfiles.git#refs/heads/{{inputs.parameters.branch}}
-          - --dockerfile=Dockerfile.martin-alpine-dotnet-runtime-web
+          - --destination ghcr.io/martin-deploy/martin-alpine-dotnet-runtime-web:{{inputs.parameters.version}}
+          - --context git://github.com/martin-deploy/dockerfiles.git#refs/heads/{{inputs.parameters.branch}}
+          - --dockerfile Dockerfile.martin-alpine-dotnet-runtime-web
           - --single-snapshot
           # - --build-arg key=value                  This flag allows you to pass in ARG values at build time. Set it repeatedly for multiple values.
           - --label org.opencontainers.image.source=https://github.com/martin-deploy/dockerfiles
